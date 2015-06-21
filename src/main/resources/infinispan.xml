@@ -1,0 +1,17 @@
+<infinispan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="urn:infinispan:config:7.2 http://www.infinispan.org/schemas/infinispan-config-7.2.xsd"
+            xmlns="urn:infinispan:config:7.2">
+
+    <cache-container default-cache="default">
+        <local-cache name="ips">
+            <eviction strategy="LIRS" max-entries="1000000"/>
+            <persistence passivation="false">
+                <file-store fetch-state="true" read-only="false" purge="false" path="${java.io.tmpdir}"
+                            preload="true" shared="false">
+                    <write-behind thread-pool-size="2"/>
+                </file-store>
+            </persistence>
+        </local-cache>
+    </cache-container>
+
+</infinispan>

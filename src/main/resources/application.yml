@@ -1,0 +1,6 @@
+error.whitelabel.enabled: false
+
+spring.cache.type: infinispan
+spring.cache.infinispan.config: infinispan.xml
+
+logging.level.io.mikael: DEBUG
