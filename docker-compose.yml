@@ -1,0 +1,13 @@
+api:
+  image: "maven:3-jdk-8"
+  command: "mvn -Dmaven.repo.local=/m2/repository -Dapp.edge.host=${EDGE_PORT_2001_UDP_ADDR} -Dapp.edge.port=${EDGE_PORT_2001_UDP_PORT} clean spring-boot:run"
+  volumes:
+    - "./:/app"
+    - "$HOME/.m2/:/m2"
+  user: "1000"
+  working_dir: "/app"
+  ports: ["18080:8080"]
+  links: ["edge"]
+edge:
+  image: "yle/edgescape"
+  expose: ["2001", "2003"]
