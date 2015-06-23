@@ -2,7 +2,6 @@ package io.mikael.loc2;
 
 import com.jayway.restassured.RestAssured;
 import org.apache.http.HttpStatus;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +17,7 @@ import java.util.Map;
 
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -53,8 +53,8 @@ public class IntegrationTests {
                 get("/address/current").
         then().
                 statusCode(HttpStatus.SC_OK).
-                body("country_code", Matchers.is("FI")).
-                body("continent", Matchers.is("EU"));
+                body("country_code", is("FI")).
+                body("continent", is("EU"));
     }
 
     @Test
@@ -63,8 +63,8 @@ public class IntegrationTests {
                 get("/address/{ip}", "91.229.137.38").
         then().
                 statusCode(HttpStatus.SC_OK).
-                body("country_code", Matchers.is("FI")).
-                body("continent", Matchers.is("EU"));
+                body("country_code", is("FI")).
+                body("continent", is("EU"));
     }
 
 }
