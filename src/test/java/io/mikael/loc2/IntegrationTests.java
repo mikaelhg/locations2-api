@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-@IntegrationTest({"server.port:0", "spring.cache.type:none"})
+@IntegrationTest({"server.port=0", "spring.cache.type=none"})
 @DirtiesContext
 public class IntegrationTests {
 
@@ -48,7 +48,7 @@ public class IntegrationTests {
     @Test
     public void current() throws Exception {
         given().
-                header("X-Forwarded-For", "91.229.137.37").
+                header("X-Forwarded-For", "91.229.137.36").
         when().
                 get("/address/current").
         then().
@@ -60,7 +60,7 @@ public class IntegrationTests {
     @Test
     public void specificIp() throws Exception {
         when().
-                get("/address/{ip}", "91.229.137.38").
+                get("/address/{ip}", "91.229.137.36").
         then().
                 statusCode(HttpStatus.SC_OK).
                 body("country_code", is("FI")).
