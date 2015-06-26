@@ -58,7 +58,7 @@ public class EdgeService {
             sock.receive(responsePacket);
 
             buffer.position(0);
-            return EdgeCodec.response(buffer, number, ip.length());
+            return EdgeCodec.response(buffer, number, ip);
         } catch (PortUnreachableException e) {
             log.error("could not reach the server to make the initial request, make sure it's available in the address you have configured", e);
         } catch (SocketTimeoutException e) {

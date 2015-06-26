@@ -27,7 +27,7 @@ public class EdgeCodec {
     }
 
     public static Map<String, String> response(
-            final ByteBuffer buffer, final int requestNumber, final int ipLength)
+            final ByteBuffer buffer, final int requestNumber, final String ip)
     {
         buffer.get(); // version
         buffer.get(); // flags
@@ -43,6 +43,11 @@ public class EdgeCodec {
         buffer.get(); // reserved
         final byte[] data = new byte[length - HEADER_LENGTH];
         buffer.get(data);
+        final int ipLength = ip.length();
+        final String responseIp = new String(data, 0, ipLength, StandardCharsets.ISO_8859_1);
+        if (!ip.equals(responseIp)) {
+            return null;
+        }
         return TO_MAP.split(new String(data, ipLength, length - HEADER_LENGTH - ipLength, StandardCharsets.ISO_8859_1));
     }
 
