@@ -4,6 +4,7 @@ import com.jayway.restassured.RestAssured;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,7 @@ import static org.junit.Assert.assertEquals;
 @WebAppConfiguration
 @IntegrationTest({"server.port=0", "spring.cache.type=none"})
 @DirtiesContext
+@Category(IntegrationTests.class)
 public class IntegrationTests {
 
     @Value("${local.server.port}")
