@@ -34,14 +34,14 @@ public class Application implements ErrorController {
     public ResponseEntity<Map<String, String>> currentAddress(
             @RequestHeader("X-Forwarded-For") final String ip)
     {
-        return Optional.ofNullable(es.fetchDataForIp(ip))
+        return es.fetchDataForIp(ip)
                 .map(map -> new ResponseEntity<>(map, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @RequestMapping("/address/{ip:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}}")
     public ResponseEntity<Map<String, String>> addressForIp(@PathVariable("ip") String ip) {
-        return Optional.ofNullable(es.fetchDataForIp(ip))
+        return es.fetchDataForIp(ip)
                 .map(map -> new ResponseEntity<>(map, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
