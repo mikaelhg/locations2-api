@@ -3,8 +3,6 @@ package io.mikael.loc2;
 import com.google.common.base.Splitter;
 import com.google.common.primitives.Shorts;
 import com.google.common.primitives.UnsignedBytes;
-import org.infinispan.commons.marshall.AdvancedExternalizer;
-import org.infinispan.commons.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,15 +10,11 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
@@ -54,7 +48,7 @@ public class EdgeService {
     }
 
     @Cacheable
-    public Optional<Map<String, String>> fetchDataForIp(final String ip) {
+    public Optional<Map<String, String>> lookupIp(final String ip) {
         log.debug("Fetching data for ip {}", ip);
         final int number = nextNumber();
         byte[] bytes = new byte[2048];
@@ -84,7 +78,7 @@ public class EdgeService {
         } catch (Exception e) {
             log.error("probably a socket error, check your configuration values", e);
         }
-        return null;
+        return Optional.empty();
     }
 
     private static void request(final ByteBuffer bb, final long number, final String ip) {
@@ -122,37 +116,6 @@ public class EdgeService {
         }
         final int mapDataLength = length - HEADER_LENGTH - ipLength;
         return Optional.ofNullable(TO_MAP.split(new String(data, ipLength, mapDataLength, ISO_8859_1)));
-    }
-
-    public static class OptionalExternalizer implements AdvancedExternalizer<Optional> {
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public Set<Class<? extends Optional>> getTypeClasses() {
-            return Util.<Class<? extends Optional>>asSet(Optional.class);
-        }
-
-        @Override
-        public Integer getId() {
-            return 1234;
-        }
-
-        @Override
-        public void writeObject(final ObjectOutput output, final Optional object) throws IOException {
-            output.writeBoolean(object.isPresent());
-            if (object.isPresent()) {
-                output.writeObject(object.get());
-            }
-        }
-
-        @Override
-        public Optional readObject(final ObjectInput input) throws IOException, ClassNotFoundException {
-            if (input.readBoolean()) {
-                return Optional.ofNullable(input.readObject());
-            } else {
-                return Optional.empty();
-            }
-        }
     }
 
 }

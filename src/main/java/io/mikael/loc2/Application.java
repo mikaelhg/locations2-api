@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
-import java.util.Optional;
 
 @SpringBootApplication
 @EnableCaching
+@CrossOrigin
 @RestController
 public class Application implements ErrorController {
 
@@ -34,14 +34,14 @@ public class Application implements ErrorController {
     public ResponseEntity<Map<String, String>> currentAddress(
             @RequestHeader("X-Forwarded-For") final String ip)
     {
-        return es.fetchDataForIp(ip)
+        return es.lookupIp(ip)
                 .map(map -> new ResponseEntity<>(map, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @RequestMapping("/address/{ip:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}}")
     public ResponseEntity<Map<String, String>> addressForIp(@PathVariable("ip") String ip) {
-        return es.fetchDataForIp(ip)
+        return es.lookupIp(ip)
                 .map(map -> new ResponseEntity<>(map, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

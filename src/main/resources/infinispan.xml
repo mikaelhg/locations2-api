@@ -4,7 +4,7 @@
 
     <cache-container default-cache="default">
         <serialization>
-            <advanced-externalizer class="io.mikael.loc2.EdgeService$OptionalExternalizer" />
+            <advanced-externalizer class="io.mikael.loc2.OptionalExternalizer" />
         </serialization>
         <local-cache name="ips">
             <eviction strategy="LIRS" max-entries="1000000"/>

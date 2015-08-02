@@ -42,7 +42,7 @@ public class IntegrationTests {
 
     @Test
     public void serviceWorks() {
-        final Map<String, String> finland = es.fetchDataForIp("91.229.137.36").get();
+        final Map<String, String> finland = es.lookupIp("91.229.137.36").get();
         assertEquals(finland.get("country_code"), "FI");
         assertEquals(finland.get("continent"), "EU");
     }
