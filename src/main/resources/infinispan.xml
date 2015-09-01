@@ -1,11 +1,8 @@
 <infinispan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="urn:infinispan:config:7.2 http://www.infinispan.org/schemas/infinispan-config-7.2.xsd"
-            xmlns="urn:infinispan:config:7.2">
+            xsi:schemaLocation="urn:infinispan:config:8.0 http://www.infinispan.org/schemas/infinispan-config-8.0.xsd"
+            xmlns="urn:infinispan:config:8.0">
 
     <cache-container default-cache="default">
-        <serialization>
-            <advanced-externalizer class="io.mikael.loc2.OptionalExternalizer" />
-        </serialization>
         <local-cache name="ips">
             <eviction strategy="LIRS" max-entries="1000000"/>
             <persistence passivation="false">
