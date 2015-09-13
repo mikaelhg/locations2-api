@@ -8,12 +8,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Map;
+
+import static org.springframework.http.HttpStatus.*;
 
 @SpringBootApplication
 @EnableCaching
@@ -35,15 +36,15 @@ public class Application implements ErrorController {
             @RequestHeader("X-Forwarded-For") final String ip)
     {
         return es.lookupIp(ip)
-                .map(map -> new ResponseEntity<>(map, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(map -> new ResponseEntity<>(map, OK))
+                .orElseGet(() -> new ResponseEntity<>(NOT_FOUND));
     }
 
     @RequestMapping("/address/{ip:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}}")
     public ResponseEntity<Map<String, String>> addressForIp(@PathVariable("ip") String ip) {
         return es.lookupIp(ip)
-                .map(map -> new ResponseEntity<>(map, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(map -> new ResponseEntity<>(map, OK))
+                .orElseGet(() -> new ResponseEntity<>(NOT_FOUND));
     }
 
     @ExceptionHandler
@@ -54,7 +55,7 @@ public class Application implements ErrorController {
                 "message", ex != null ? ex.getMessage() : "",
                 "path", req.getContextPath(),
                 "timestamp", java.time.OffsetDateTime.now().toString());
-        return new ResponseEntity<>(ret, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ret, INTERNAL_SERVER_ERROR);
     }
 
     @RequestMapping("/error")
@@ -62,7 +63,7 @@ public class Application implements ErrorController {
         final Map<String, String> ret = ImmutableMap.of(
                 "status", "404",
                 "timestamp", java.time.OffsetDateTime.now().toString());
-        return new ResponseEntity<>(ret, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ret, NOT_FOUND);
     }
 
     @Override
